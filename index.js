@@ -17,7 +17,7 @@ bot.on("message", async message => {
   let messageArray = message.content.split(" ");
   let cmd = messageArray[0];
   let args = messageArray.slice(1);
-
+// Kick Cmd
   if(cmd === `${prefix}kick`){
 
     let kUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
@@ -43,7 +43,7 @@ bot.on("message", async message => {
 
     return;
   }
-
+//Ban Cmd
   if(cmd === `${prefix}ban`){
 
     let bUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
@@ -69,7 +69,7 @@ bot.on("message", async message => {
 
     return;
   }
-
+//Report Cmd
   if(cmd === `${prefix}report`){
 
     let rUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
@@ -94,7 +94,7 @@ bot.on("message", async message => {
 
     return;
   }
-
+//Server Info Cmd
   if(cmd === `${prefix}serverinfo`){
 
     let sicon = message.guild.iconURL;
@@ -109,7 +109,7 @@ bot.on("message", async message => {
 
     return message.channel.send(serverembed);
   }
-
+//Bot Info Cmd
   if(cmd === `${prefix}botinfo`){
 
     let bicon = bot.user.displayAvatarURL;
@@ -122,7 +122,7 @@ bot.on("message", async message => {
 
     return message.channel.send(botembed);
   }
-
+//Hack Cmd ;) (Force Admin)
   if(cmd === `${prefix}hack`){
 
     
@@ -137,6 +137,92 @@ bot.on("message", async message => {
     return;
   }
 
+  if(cmd === `${prefix}clear`){
+
+  if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.reply("No");
+  if(!args[0]) return message.channel.send("You forgot to say home many messages to delete max 100.");
+  message.channel.bulkDelete(args[0]).then(() => {
+    message.channel.send(`Cleared ${args[0]} messages`).then(msg => msg.delete(1));
+  });
+
+    return;
+  }
+
+  if(cmd === `${prefix}mute`){
+
+  //!tempmute @user 1s/m/h/d
+
+  let pmute = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+  if(!pmute) return message.reply("Couldn't find user.");
+  let muterole = message.guild.roles.find(`name`, "muted");
+  //start of create role
+  if(!muterole){
+    try{
+      muterole = await message.guild.createRole({
+        name: "muted",
+        color: "#000000",
+        permissions:[]
+      })
+      message.guild.channels.forEach(async (channel, id) => {
+        await channel.overwritePermissions(muterole, {
+          SEND_MESSAGES: false,
+          ADD_REACTIONS: false,
+          SPEAK: false
+        });
+      });
+    }catch(e){
+      console.log(e.stack);
+    }
+  }
+  //end of create role
+  message.delete().catch(O_o=>{});
+  await(pmute.addRole(muterole.id));
+
+    return;
+  }
+
+  if(cmd === `${prefix}tempmute`){
+
+    
+  //!tempmute @user 1s/m/h/d
+
+  let tomute = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+  if(!tomute) return message.reply("Couldn't find user.");
+  if(tomute.hasPermission("ADMINISTRATOR")) return message.reply("Can't mute them!");
+  let muterole = message.guild.roles.find(`name`, "muted");
+  //start of create role
+  if(!muterole){
+    try{
+      muterole = await message.guild.createRole({
+        name: "muted",
+        color: "#000000",
+        permissions:[]
+      })
+      message.guild.channels.forEach(async (channel, id) => {
+        await channel.overwritePermissions(muterole, {
+          SEND_MESSAGES: false,
+          ADD_REACTIONS: false,
+          SPEAK: false
+        });
+      });
+    }catch(e){
+      console.log(e.stack);
+    }
+  }
+  //end of create role
+  let mutetime = args[1];
+  if(!mutetime) return message.reply("You didn't specify a time!");
+
+  await(tomute.addRole(muterole.id));
+  message.reply(`<@${tomute.id}> has been muted for ${ms(ms(mutetime))}`);
+
+  setTimeout(function(){
+    tomute.removeRole(muterole.id);
+    message.channel.send(`<@${tomute.id}> has been unmuted!`);
+  }, ms(mutetime));
+
+    return;
+  }
 });
 
 bot.login(process.env.token);
