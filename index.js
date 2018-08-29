@@ -136,7 +136,7 @@ bot.on("message", async message => {
 
     return;
   }
-
+//Clear Cmd
   if(cmd === `${prefix}clear`){
 
   if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.reply("No");
@@ -147,10 +147,8 @@ bot.on("message", async message => {
 
     return;
   }
-
+//Mute Cmd
   if(cmd === `${prefix}mute`){
-
-  //!tempmute @user 1s/m/h/d
 
   let pmute = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
   if(!pmute) return message.reply("Couldn't find user.");
@@ -180,7 +178,7 @@ bot.on("message", async message => {
 
     return;
   }
-
+//Tempmute Cmd
   if(cmd === `${prefix}tempmute`){
 
     
@@ -221,6 +219,40 @@ bot.on("message", async message => {
     message.channel.send(`<@${tomute.id}> has been unmuted!`);
   }, ms(mutetime));
 
+    return;
+  }
+//Help Cmd
+  if(cmd === `${prefix}help`){
+
+    let bicon = bot.user.displayAvatarURL;
+    let botembed = new Discord.RichEmbed()
+    .setDescription("Bot Commands.")
+    .setColor("#15f153")
+    .setThumbnail(bicon)
+    .addField("Kick", "~kick @user Reason")
+    .addField("Ban", "~ban @user Reason")
+    .addField("Clear", "~clear Ammount max 100")
+    .addField("Server Information", "~serverinfo")
+    .addField("Bot Information", "~botinfo")
+    .addField("Report", "~report @user Reason")
+    .addField("perm mute", "~mute @user")
+    .addField ("tempmute", "~tempmute @user");
+
+    message.delete().catch(O_o=>{});
+    message.channel.send(botembed);
+
+    return;
+  }
+//Unmute Cmd
+  if(cmd === `${prefix}unmute`){
+
+    let pmute = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+    if(!pmute) return message.reply("Couldn't find user.");
+    let muterole = message.guild.roles.find(`name`, "muted");
+  
+    message.delete().catch(O_o=>{});
+    await(pmute.removeRole(muterole.id));
+    
     return;
   }
 });
