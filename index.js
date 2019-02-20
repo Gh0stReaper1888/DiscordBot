@@ -75,7 +75,7 @@ bot.on("message", function (message) {
       break;
 
     case "live":
-      message.channel.send("@everyone i am live at https://twitch.tv/roninpt/");
+      message.channel.send("i am live at https://twitch.tv/roninpt/");
       message.delete().catch(O_o => { });
       break;
 
@@ -129,46 +129,47 @@ bot.on("message", function (message) {
       break;
 
     case "botinfo":
-      
-      let bicon = bot.user.displayAvatarURL;
+
+
+      let ficon = bot.user.displayAvatarURL;
       let botembed = new Discord.RichEmbed()
-      .setDescription("Bot Information")
-      .setColor("#15f153")
-      .setThumbnail(bicon)
-      .addField("Bot Name", bot.user.username)
-      .addField("Created On", bot.user.createdAt);
-      
+        .setDescription("Bot Information")
+        .setColor("#15f153")
+        .setThumbnail(ficon)
+        .addField("Bot Name", bot.user.username)
+        .addField("Created On", bot.user.createdAt);
+
       message.delete().catch(O_o => { });
-      
-      break;
-      
-      
-      message.delete().catch(O_o => { });
-      case "":
-      
+
+      return message.channel.send(botembed);
 
       break;
-      
-      case "serverinfo":
-      
-     let sicon = message.guild.iconURL;
-     let serverembed = new Discord.RichEmbed()
-    .setDescription("Server Information")
-    .setColor("#15f153")
-    .setThumbnail(sicon)
-    .addField("Server Name", message.guild.name)
-    .addField("Created On", message.guild.createdAt)
-    .addField("You Joined", message.member.joinedAt)
-    .addField("Total Members", message.guild.memberCount);
 
-    return message.channel.send(serverembed);
+
       
+    case "":
+     
+     message.delete().catch(O_o => { });
+    break;
+
+    case "serverinfo":
+
+      let sicon = message.guild.iconURL;
+      let serverembed = new Discord.RichEmbed()
+        .setDescription("Server Information")
+        .setColor("#15f153")
+        .setThumbnail(sicon)
+        .addField("Server Name", message.guild.name)
+        .addField("Created On", message.guild.createdAt)
+        .addField("You Joined", message.member.joinedAt)
+        .addField("Total Members", message.guild.memberCount);
+
+      return message.channel.send(serverembed);
+
       message.delete().catch(O_o => { });
       break;
   }
 
-
 });
-
 bot.login(process.env.token);
  
