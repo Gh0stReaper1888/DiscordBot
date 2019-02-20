@@ -10,14 +10,36 @@ bot.on("ready", function () {
   console.log("Im ready");
 });
 
+bot.on("ready", async () => {
+  console.log(`${bot.user.username} is online!`);
+
+  bot.user.setActivity("You'r every move", { type: "Watching" });
+
+});
+
+bot.on("message", function (message) {
+  if (message.content.indexOf("nigger") == 0) {
+    message.delete().catch(O_o => { });
+    message.channel.send("your racism has been logged and action may follow")
+    let racismEmbed = new Discord.RichEmbed()
+      .setDescription("racism log")
+      .setColor("#f00000")
+      .addField("racist wank", `${message.author} with ID: ${message.author.id}`)
+      .addField("Channel", message.channel)
+      .addField("Time", message.createdAt);
+
+    let reportschannel = message.guild.channels.find(`name`, "logs");
+    if (!reportschannel) return message.channel.send("Couldn't find reports channel.");
+
+    reportschannel.send(racismEmbed);
+  }
+
+});
+
 bot.on("message", function (message) {
   if (message.author.equals(bot.user)) return;
 
   if (!message.content.startsWith(prefix)) return;
-
-  if (message.content == 'nigger') {
-    message.channel.sendMessage('Stop with the racism')
-  };
 
   var args = message.content.substring(prefix.length).split(" ");
 
@@ -30,7 +52,7 @@ bot.on("message", function (message) {
         .setThumbnail(bicon)
         .addField("Kick", "?kick @user Reason")
         .addField("Ban", "?ban @user Reason")
-        .addField("multijake", "pens multistream for ron & jake")
+        .addField("multijake", "multistream for ron & jake")
         .addField("Server Information", "?serverinfo")
         .addField("Bot Information", "?botinfo")
         .addField("Coder", 'Gh0st');
@@ -146,11 +168,14 @@ bot.on("message", function (message) {
       break;
 
 
-      
+
     case "":
-     
-     message.delete().catch(O_o => { });
-    break;
+
+
+
+      message.delete().catch(O_o => { });
+
+      break;
 
     case "serverinfo":
 
@@ -170,6 +195,8 @@ bot.on("message", function (message) {
       break;
   }
 
+
 });
+
 bot.login(process.env.token);
  
