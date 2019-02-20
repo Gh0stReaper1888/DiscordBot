@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 const prefix = "?"
+const config = require("./config.json");
 
 bot.on("message", function (message) {
   console.log(message.content);
@@ -17,10 +18,10 @@ bot.on("ready", async () => {
 
 });
 
-bot.on("message", function (message) {
-  if (message.content.indexOf("nigger") == 0) {
-    message.delete().catch(O_o => { });
-    message.channel.send("your racism has been logged and action may follow")
+bot.on('message', message => {
+  if (config.FILTER_LIST.some(word => message.content.toLowerCase().includes(word))) {
+    message.delete()
+    message.channel.send("Your racism has been logged and action may follow.")
     let racismEmbed = new Discord.RichEmbed()
       .setDescription("racism log")
       .setColor("#f00000")
@@ -33,8 +34,8 @@ bot.on("message", function (message) {
 
     reportschannel.send(racismEmbed);
   }
+})
 
-});
 
 bot.on("message", function (message) {
   if (message.author.equals(bot.user)) return;
