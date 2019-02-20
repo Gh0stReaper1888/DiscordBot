@@ -75,7 +75,7 @@ bot.on("message", function (message) {
       break;
 
     case "live":
-      message.channel.send("i am live at https://twitch.tv/roninpt/");
+      message.channel.send("@everyone i am live at https://twitch.tv/roninpt/");
       message.delete().catch(O_o => { });
       break;
 
