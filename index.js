@@ -21,7 +21,7 @@ bot.on("ready", async () => {
 bot.on('message', message => {
   if (config.FILTER_LIST.some(word => message.content.toLowerCase().includes(word))) {
     message.delete()
-    message.reply("Your racism has been logged and action may follow.")
+    message.reply("Your launguage is not appreciated here and has been logged and action may follow.")
     let racismEmbed = new Discord.RichEmbed()
       .setDescription("racism log")
       .setColor("#f00000")
