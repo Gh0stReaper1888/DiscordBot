@@ -21,10 +21,11 @@ bot.on("ready", async () => {
 bot.on('message', message => {
   if (config.FILTER_LIST.some(word => message.content.toLowerCase().includes(word))) {
     message.delete()
-    message.reply("That launguage is not appreciated here and has been logged, action may follow.")
+    message.reply("Your racism has been logged and action may follow.")
     let racismEmbed = new Discord.RichEmbed()
       .setDescription("racism log")
       .setColor("#f00000")
+      .addField("Please deal with this")
       .addField("racist wank", `${message.author} with ID: ${message.author.id}`)
       .addField("Channel", message.channel)
       .addField("Time", message.createdAt);
@@ -33,6 +34,7 @@ bot.on('message', message => {
     if (!reportschannel) return message.channel.send("Couldn't find reports channel.");
 
     reportschannel.send(racismEmbed);
+    reportschannel.send("@everyone");
   }
 })
 
