@@ -23,10 +23,10 @@ bot.on('message', message => {
     message.delete()
     message.reply("Your racism has been logged and action may follow.")
     let racismEmbed = new Discord.RichEmbed()
-      .setDescription("racism log")
+      .setDescription("language log")
       .setColor("#f00000")
       .addField("Please deal with this")
-      .addField("racist wank", `${message.author} with ID: ${message.author.id}`)
+      .addField("violator", `${message.author} with ID: ${message.author.id}`)
       .addField("Channel", message.channel)
       .addField("Time", message.createdAt);
 
@@ -172,9 +172,18 @@ bot.on("message", function (message) {
 
 
 
-    case "":
+    case "clear":
 
+      if (!message.guild.member(message.author).hasPermission("MANAGE_MESSAGE")) return message.channel.send("you dont have permissions to run this command !");
 
+      let args = message.content.split(" ").slice(1);
+
+      if (args >= 100) return message.channel.send("Sorry i cant clear that many.")
+
+      if (!args[0]) return message.channel.send("You have not specified the number of messages to delete. (upto 100 max 2 weeks old)")
+      message.channel.bulkDelete(args[0]).then(() => {
+        message.channel.send(`${args[0]} messages cleared !`);
+      })
 
       message.delete().catch(O_o => { });
 
