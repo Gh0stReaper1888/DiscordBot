@@ -174,16 +174,12 @@ bot.on("message", function (message) {
 
     case "clear":
 
-      if (!message.guild.member(message.author).hasPermission("MANAGE_MESSAGE")) return message.channel.send("you dont have permissions to run this command !");
-
-      let args = message.content.split(" ").slice(1);
-
-      if (args >= 100) return message.channel.send("Sorry i cant clear that many.")
-
-      if (!args[0]) return message.channel.send("You have not specified the number of messages to delete. (upto 100 max 2 weeks old)")
+      if (!message.member.hasPermission("MANAGE_MESSAGES")) return message.reply("No");
+      if (!args[0]) return message.channel.send("You forgot to say home many messages to delete max 100.");
       message.channel.bulkDelete(args[0]).then(() => {
-        message.channel.send(`${args[0]} messages cleared !`);
-      })
+        message.channel.send(`Cleared ${args[0]} messages`).then(msg => msg.delete(1));
+      });
+
 
       message.delete().catch(O_o => { });
 
